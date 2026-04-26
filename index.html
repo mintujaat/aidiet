@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Diet Planner - Personalized Diet Plans</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --shadow-light: 0 4px 15px rgba(0, 0, 0, 0.1);
+            --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.15);
+            --shadow-heavy: 0 15px 50px rgba(0, 0, 0, 0.2);
+            --color-primary: #667eea;
+            --color-secondary: #764ba2;
+            --color-accent: #f5576c;
+            --color-text-dark: #1a1a1a;
+            --color-text-light: #666666;
+            --color-bg-light: #f8f9fb;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 15px;
+            color: var(--color-text-dark);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(118, 75, 162, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+            animation: slideInDown 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        header h1 {
+            font-size: clamp(2em, 5vw, 3.5em);
+            margin-bottom: 15px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        header p {
+            font-size: clamp(1em, 2vw, 1.3em);
+            opacity: 0.95;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 35px;
+            animation: fadeIn 0.8s ease 0.2s both;
+        }
+
+        .form-section, .result-section {
+            background: white;
+            padding: 45px;
+            border-radius: 20px;
+            box-shadow: var(--shadow-heavy);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-section::before, .result-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary-gradient);
+            opacity: 0.7;
+        }
+
+        .form-section h2, .result-section h2 {
+            color: var(--color-primary);
+            margin-bottom: 30px;
+            font-size: clamp(1.5em, 3vw, 2.2em);
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            animation: slideInUp 0.6s ease backwards;
+        }
+
+        .form-group:nth-child(1) { animation-delay: 0s; }
+        .form-group:nth-child(2) { animation-delay: 0.1s; }
+        .form-group:nth-child(3) { animation-delay: 0.2s; }
+        .form-group:nth-child(4) { animation-delay: 0.3s; }
+        .form-group:nth-child(5) { animation-delay: 0.4s; }
+        .form-group:nth-child(6) { animation-delay: 0.5s; }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--color-text-dark);
+            font-weight: 600;
+            font-size: 0.95em;
+            letter-spacing: 0.3px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e8e8f0;
+            border-radius: 12px;
+            font-size: 1em;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: inherit;
+            background: #ffffff;
+            color: var(--color-text-dark);
+        }
+
+        input::placeholder {
+            color: #b0b0c0;
+        }
+
+        input:hover, select:hover {
+            border-color: #d0d0e0;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.08);
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15), var(--shadow-light);
+            background: #ffffff;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 16px 24px;
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.05em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 15px;
+            letter-spacing: 0.5px;
+            box-shadow: var(--shadow-medium);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-submit::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.35);
+        }
+
+        .btn-submit:active {
+            transform: translateY(-1px);
+        }
+
+        .result-section {
+            max-height: 900px;
+            overflow-y: auto;
+        }
+
+        .result-section::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .result-section::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .result-section::-webkit-scrollbar-thumb {
+            background: var(--color-primary);
+            border-radius: 10px;
+        }
+
+        .result-section::-webkit-scrollbar-thumb:hover {
+            background: var(--color-secondary);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f8f9fb 0%, #f0f2f8 100%);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid var(--color-primary);
+            box-shadow: var(--shadow-light);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+            border-left-color: var(--color-secondary);
+        }
+
+        .stat-label {
+            color: var(--color-text-light);
+            font-size: 0.85em;
+            margin-bottom: 8px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 2.2em;
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .diet-plan {
+            margin-top: 30px;
+        }
+
+        .meal {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fb 100%);
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            border-left: 5px solid var(--color-secondary);
+            box-shadow: var(--shadow-light);
+            transition: all 0.3s ease;
+            border: 1px solid #f0f0f8;
+        }
+
+        .meal:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .meal-title {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: var(--color-text-dark);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .meal-items {
+            color: var(--color-text-light);
+            line-height: 1.9;
+        }
+
+        .meal-items li {
+            margin-bottom: 10px;
+            margin-left: 25px;
+            font-size: 0.95em;
+            transition: color 0.3s ease;
+        }
+
+        .meal-items li:hover {
+            color: var(--color-primary);
+        }
+
+        .nutrition-summary {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 25px;
+            border: 2px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .nutrition-summary h4 {
+            color: var(--color-primary);
+            margin-bottom: 15px;
+            font-size: 1.15em;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        .nutrition-summary ul li {
+            margin-bottom: 12px;
+            padding-left: 8px;
+            font-size: 0.95em;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #e8f4f8 0%, #f0ebff 100%);
+            border-left: 5px solid var(--color-primary);
+            padding: 18px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            color: var(--color-text-light);
+            font-size: 0.95em;
+            border: 1px solid rgba(102, 126, 234, 0.15);
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                gap: 25px;
+            }
+
+            .form-section, .result-section {
+                padding: 35px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            header h1 {
+                font-size: 2.2em;
+            }
+
+            header p {
+                font-size: 1em;
+            }
+
+            .form-section, .result-section {
+                padding: 30px 20px;
+                border-radius: 16px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .meal {
+                padding: 20px;
+            }
+
+            .meal-items li {
+                margin-left: 20px;
+                font-size: 0.9em;
+            }
+
+            label {
+                font-size: 0.9em;
+            }
+
+            input, select {
+                padding: 12px 14px;
+                font-size: 16px;
+            }
+
+            .btn-submit {
+                padding: 14px 20px;
+                font-size: 1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                max-width: 100%;
+            }
+
+            header {
+                margin-bottom: 30px;
+            }
+
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            header p {
+                font-size: 0.9em;
+            }
+
+            .form-section, .result-section {
+                padding: 20px 15px;
+            }
+
+            .form-section h2, .result-section h2 {
+                font-size: 1.4em;
+                margin-bottom: 20px;
+            }
+
+            .form-group {
+                margin-bottom: 18px;
+            }
+
+            .stat-value {
+                font-size: 1.8em;
+            }
+
+            .meal-title {
+                font-size: 1.05em;
+            }
+
+            input, select {
+                padding: 11px 12px;
+                font-size: 16px;
+            }
+
+            .info-box {
+                padding: 15px;
+                font-size: 0.9em;
+            }
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .bmi-status {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-top: 8px;
+            font-weight: 700;
+            font-size: 0.9em;
+            letter-spacing: 0.3px;
+        }
+
+        .bmi-underweight {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffe5a1 100%);
+            color: #8b7000;
+            border: 1px solid rgba(139, 112, 0, 0.2);
+        }
+
+        .bmi-normal {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            color: #155724;
+            border: 1px solid rgba(21, 87, 36, 0.2);
+        }
+
+        .bmi-overweight {
+            background: linear-gradient(135deg, #ffe0e0 0%, #ffcccc 100%);
+            color: #a02c2c;
+            border: 1px solid rgba(160, 44, 44, 0.2);
+        }
+
+        .bmi-obese {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c2c7 100%);
+            color: #721c24;
+            border: 1px solid rgba(114, 28, 36, 0.2);
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🍽️ AI Diet Planner</h1>
+            <p>Get Your Personalized Diet Plan Based on Your Profile</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Form Section -->
+            <div class="form-section">
+                <h2>Your Profile</h2>
+                <div class="info-box">
+                    Fill in your details to get a personalized diet plan tailored just for you!
+                </div>
+
+                <form id="dietForm">
+                    <div class="form-group">
+                        <label for="age">Age (Years)</label>
+                        <input type="number" id="age" min="10" max="120" required placeholder="e.g., 25">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="height">Height (cm)</label>
+                            <input type="number" id="height" min="100" max="250" required placeholder="e.g., 175">
+                        </div>
+                        <div class="form-group">
+                            <label for="weight">Current Weight (kg)</label>
+                            <input type="number" id="weight" min="30" max="300" step="0.1" required placeholder="e.g., 70">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="goalWeight">Goal Weight (kg)</label>
+                            <input type="number" id="goalWeight" min="30" max="300" step="0.1" required placeholder="e.g., 65">
+                        </div>
+                        <div class="form-group">
+                            <label for="goal">Your Goal</label>
+                            <select id="goal" required>
+                                <option value="">Select Goal</option>
+                                <option value="lose">Weight Loss</option>
+                                <option value="gain">Weight Gain</option>
+                                <option value="maintain">Maintain Weight</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="activityLevel">Activity Level (Workout Frequency)</label>
+                        <select id="activityLevel" required>
+                            <option value="">Select Activity Level</option>
+                            <option value="low">Sedentary (Little or no exercise)</option>
+                            <option value="light">Lightly Active (1-3 days/week)</option>
+                            <option value="moderate">Moderately Active (3-5 days/week)</option>
+                            <option value="high">Very Active (6-7 days/week)</option>
+                            <option value="extreme">Extremely Active (2x per day)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="diet">Diet Preference</label>
+                        <select id="diet" required>
+                            <option value="">Select Diet Type</option>
+                            <option value="veg">Vegetarian</option>
+                            <option value="nonveg">Non-Vegetarian</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select id="gender" required>
+                            <option value="">Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn-submit">Generate Diet Plan</button>
+                </form>
+            </div>
+
+            <!-- Result Section -->
+            <div class="result-section" id="resultSection" style="display: none;">
+                <h2>Your Diet Plan</h2>
+                
+                <div class="stats">
+                    <div class="stat-card">
+                        <div class="stat-label">BMI</div>
+                        <div class="stat-value" id="bmiValue">-</div>
+                        <div id="bmiStatus"></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Daily Calories</div>
+                        <div class="stat-value" id="calorieValue">-</div>
+                    </div>
+                </div>
+
+                <div id="planDetails"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const activityMultipliers = {
+            low: 1.2,
+            light: 1.375,
+            moderate: 1.55,
+            high: 1.725,
+            extreme: 1.9
+        };
+
+        const genderMult = {
+            male: 88.362,
+            female: 447.593
+        };
+
+        function calculateBMR(weight, height, age, gender) {
+            // Mifflin-St Jeor Formula
+            if (gender === 'male') {
+                return 10 * weight + 6.25 * height - 5 * age + 5;
+            } else {
+                return 10 * weight + 6.25 * height - 5 * age - 161;
+            }
+        }
+
+        function calculateBMI(weight, height) {
+            const heightInMeter = height / 100;
+            return (weight / (heightInMeter * heightInMeter)).toFixed(2);
+        }
+
+        function getBMICategory(bmi) {
+            if (bmi < 18.5) return { category: 'Underweight', class: 'bmi-underweight' };
+            if (bmi < 25) return { category: 'Normal Weight', class: 'bmi-normal' };
+            if (bmi < 30) return { category: 'Overweight', class: 'bmi-overweight' };
+            return { category: 'Obese', class: 'bmi-obese' };
+        }
+
+        function getDietPlan(age, calories, ageGroup, dietType, goal) {
+            const plans = {
+                teen: {
+                    veg: {
+                        lose: {
+                            breakfast: ['Whole grain toast with almond butter', 'Banana with yogurt', 'Eggs (boiled) with veggies'],
+                            midMorning: ['Greek yogurt with berries', 'Green tea with almonds', 'Smoothie (spinach, banana, protein)'],
+                            lunch: ['Chickpea salad with veggies', 'Lentil curry with brown rice', 'Paneer with broccoli'],
+                            eveningSnack: ['Cucumber slices with hummus', 'Mixed nuts', 'Apple with peanut butter'],
+                            dinner: ['Dal with roti', 'Vegetable stir-fry with tofu', 'Quinoa bowl with roasted veggies']
+                        },
+                        gain: {
+                            breakfast: ['Oats with whole milk and banana', 'Cheese omelet with toast', 'Yogurt with granola and nuts'],
+                            midMorning: ['Peanut butter sandwich', 'Protein smoothie with dates', 'Cheese and crackers'],
+                            lunch: ['Paneer butter masala with rice', 'Moong dal khichdi with ghee', 'Chickpea curry with bread'],
+                            eveningSnack: ['Protein shake with milk', 'Dry fruits and nuts', 'Banana with almond butter'],
+                            dinner: ['Rajma with rice', 'Vegetable biryani', 'Dal makhani with naan']
+                        },
+                        maintain: {
+                            breakfast: ['Whole grain cereal with milk', 'Veggie omelet', 'Oatmeal with berries'],
+                            midMorning: ['Fruit smoothie', 'Yogurt with granola', 'Nuts and seeds'],
+                            lunch: ['Mixed vegetable curry with rice', 'Paneer with dal', 'Salad with chickpeas'],
+                            eveningSnack: ['Herbal tea with biscuits', 'Fruit (apple/orange)', 'Popcorn (light)'],
+                            dinner: ['Roti with vegetable sabzi', 'Quinoa salad', 'Vegetable soup with bread']
+                        }
+                    },
+                    nonveg: {
+                        lose: {
+                            breakfast: ['Egg white omelet with veggies', 'Grilled chicken with toast', 'Fish with whole wheat bread'],
+                            midMorning: ['Grilled chicken breast', 'Tuna salad', 'Green tea with boiled eggs'],
+                            lunch: ['Grilled fish with vegetables', 'Chicken salad with olive oil', 'Lean turkey with rice'],
+                            eveningSnack: ['Boiled egg', 'Grilled chicken strips', 'Fish curry (light)'],
+                            dinner: ['Grilled salmon with veggies', 'Chicken stir-fry', 'Lean meat with dal']
+                        },
+                        gain: {
+                            breakfast: ['Omelet (3 eggs) with butter', 'Chicken paratha', 'Salmon with toast and ghee'],
+                            midMorning: ['Chicken sandwich with mayo', 'Protein shake with chicken', 'Boiled eggs with nuts'],
+                            lunch: ['Butter chicken with rice', 'Fish biryani', 'Mutton curry with bread'],
+                            eveningSnack: ['Chicken malai kabab', 'Boiled eggs', 'Milk with banana'],
+                            dinner: ['Chicken tikka masala with naan', 'Fish fry with rice', 'Keema with paratha']
+                        },
+                        maintain: {
+                            breakfast: ['Scrambled eggs with toast', 'Grilled chicken with bread', 'Fish breakfast bowl'],
+                            midMorning: ['Boiled eggs', 'Chicken breast', 'Tuna sandwich'],
+                            lunch: ['Grilled chicken with rice', 'Fish curry (medium)', 'Turkey with veggies'],
+                            eveningSnack: ['Boiled eggs', 'Grilled chicken', 'Yogurt'],
+                            dinner: ['Tandoori chicken with dal', 'Fish with roti', 'Lean meat curry']
+                        }
+                    }
+                },
+                adult: {
+                    veg: {
+                        lose: {
+                            breakfast: ['Whole wheat toast with almond butter', 'Vegetable omelette', 'Smoothie bowl'],
+                            midMorning: ['Green smoothie', 'Yogurt with berries', 'Mixed nuts (small portion)'],
+                            lunch: ['Chickpea salad with olive oil dressing', 'Paneer tikka with vegetables', 'Lentil soup with whole grain bread'],
+                            eveningSnack: ['Herbal tea with almonds', 'Cucumber and carrot salad', 'Roasted chana'],
+                            dinner: ['Vegetable stir-fry with tofu', 'Dal makhani (light)', 'Baked vegetables with quinoa']
+                        },
+                        gain: {
+                            breakfast: ['Oatmeal with whole milk and honey', 'Cheese omelet with butter toast', 'Yogurt with granola and dry fruits'],
+                            midMorning: ['Peanut butter and banana sandwich', 'Protein smoothie with avocado', 'Cheese and nuts'],
+                            lunch: ['Paneer butter masala with rice', 'Moong dal halwa', 'Vegetable biryani'],
+                            eveningSnack: ['Milk with almonds', 'Banana with peanut butter', 'Dry fruits mix'],
+                            dinner: ['Rajma and rice with ghee', 'Paneer tikka masala with naan', 'Dal with butter and roti']
+                        },
+                        maintain: {
+                            breakfast: ['Whole grain cereal with milk', 'Vegetable sandwich', 'Oats with banana'],
+                            midMorning: ['Fruit (apple/orange)', 'Yogurt', 'Handful of nuts'],
+                            lunch: ['Mixed vegetable curry with rice', 'Paneer with dal', 'Legume salad'],
+                            eveningSnack: ['Green tea with cookies', 'Fruit smoothie', 'Roasted chickpeas'],
+                            dinner: ['Roti with sabzi', 'Lentil curry with vegetables', 'Grain bowl with protein']
+                        }
+                    },
+                    nonveg: {
+                        lose: {
+                            breakfast: ['Egg white toast', 'Grilled chicken with vegetables', 'Smoked salmon with whole grain'],
+                            midMorning: ['Grilled chicken breast', 'Light fish curry', 'Boiled eggs'],
+                            lunch: ['Grilled fish with steamed broccoli', 'Turkey salad', 'Lean chicken stir-fry'],
+                            eveningSnack: ['Boiled eggs', 'Fish snacks', 'Grilled chicken strips'],
+                            dinner: ['Salmon with vegetables', 'Tandoori chicken with salad', 'Lean meat with dal']
+                        },
+                        gain: {
+                            breakfast: ['3-egg omelet with butter', 'Chicken paratha with ghee', 'Smoked salmon with whole milk'],
+                            midMorning: ['Chicken sandwich with mayo', 'Boiled eggs with nuts', 'Fish curry with rice'],
+                            lunch: ['Butter chicken with naan', 'Biryani with meat', 'Keema with paratha'],
+                            eveningSnack: ['Mutton Seekh kabab', 'Milk with boiled eggs', 'Shrimp curry'],
+                            dinner: ['Chicken tikka masala with rice', 'Fish fry with paratha', 'Meat curry with bread']
+                        },
+                        maintain: {
+                            breakfast: ['Scrambled eggs with toast', 'Grilled chicken with vegetable', 'Fish and rice'],
+                            midMorning: ['Boiled eggs', 'Grilled chicken', 'Tuna salad'],
+                            lunch: ['Grilled fish with rice', 'Chicken curry (medium)', 'Turkey with vegetables'],
+                            eveningSnack: ['Boiled eggs', 'Grilled chicken', 'Greek yogurt'],
+                            dinner: ['Tandoori chicken with dal', 'Fish curry with roti', 'Lean meat with vegetables']
+                        }
+                    }
+                },
+                senior: {
+                    veg: {
+                        lose: {
+                            breakfast: ['Oatmeal with milk', 'Whole wheat toast with cottage cheese', 'Light vegetable soup'],
+                            midMorning: ['Tea with biscuits', 'Banana', 'Mixed berries'],
+                            lunch: ['Vegetable khichdi', 'Light dal with rice', 'Steamed vegetables with roti'],
+                            eveningSnack: ['Herbal tea with fruits', 'Light crackers', 'Warm milk'],
+                            dinner: ['Soft dal with rice', 'Vegetable curry (mild)', 'Light vegetable soup']
+                        },
+                        gain: {
+                            breakfast: ['Oatmeal with whole milk and honey', 'Toast with butter and jam', 'Milk pudding with dry fruits'],
+                            midMorning: ['Warm milk with banana', 'Nuts and dry fruits', 'Cottage cheese'],
+                            lunch: ['Dal makhani with rice', 'Paneer with vegetables', 'Vegetable biryani'],
+                            eveningSnack: ['Warm milk with almonds', 'Fruit with custard', 'Wheat cookies'],
+                            dinner: ['Creamy dal with roti', 'Paneer curry with rice', 'Vegetable kheer']
+                        },
+                        maintain: {
+                            breakfast: ['Mild oatmeal', 'Toast with butter', 'Boiled eggs (1-2)'],
+                            midMorning: ['Tea with biscuits', 'Banana or orange', 'Almonds'],
+                            lunch: ['Dal with rice', 'Vegetable curry', 'Roti with sabzi'],
+                            eveningSnack: ['Herbal tea', 'Light cookies', 'Fruit'],
+                            dinner: ['Light dal soup', 'Soft vegetable curry', 'Rice with dal']
+                        }
+                    },
+                    nonveg: {
+                        lose: {
+                            breakfast: ['Soft omelet', 'Fish soup', 'Boiled eggs with toast'],
+                            midMorning: ['Light chicken soup', 'Boiled eggs', 'Warm milk'],
+                            lunch: ['Light fish curry with rice', 'Chicken soup', 'Tender meat with vegetables'],
+                            eveningSnack: ['Light broth', 'Boiled eggs', 'Warm milk'],
+                            dinner: ['Soft fish curry', 'Light chicken dal', 'Meat soup with vegetables']
+                        },
+                        gain: {
+                            breakfast: ['Soft omelet with butter', 'Fish with rice', 'Boiled eggs with milk'],
+                            midMorning: ['Warm milk with chicken', 'Creamy chicken soup', 'Fish with toast'],
+                            lunch: ['Butter chicken with rice', 'Meat biryani', 'Fish fry with rice'],
+                            eveningSnack: ['Warm milk with eggs', 'Chicken custard', 'Fish snacks'],
+                            dinner: ['Creamy fish curry with rice', 'Tender chicken curry', 'Meat dal']
+                        },
+                        maintain: {
+                            breakfast: ['Soft omelet', 'Boiled eggs with toast', 'Light fish'],
+                            midMorning: ['Boiled eggs', 'Chicken broth', 'Warm milk'],
+                            lunch: ['Light fish curry with rice', 'Tender chicken with vegetables', 'Meat soup'],
+                            eveningSnack: ['Boiled eggs', 'Warm milk', 'Light broth'],
+                            dinner: ['Soft fish curry', 'Chicken dal', 'Light meat curry']
+                        }
+                    }
+                }
+            };
+
+            const dietPlan = plans[ageGroup][dietType][goal];
+            return dietPlan;
+        }
+
+        function getAgeGroup(age) {
+            if (age < 20) return 'teen';
+            if (age < 60) return 'adult';
+            return 'senior';
+        }
+
+        function adjustCalories(baseCalories, currentWeight, goalWeight) {
+            if (currentWeight === goalWeight) {
+                return Math.round(baseCalories);
+            }
+            if (currentWeight > goalWeight) {
+                // Weight loss: reduce by 300-500 calories
+                return Math.round(baseCalories - 400);
+            } else {
+                // Weight gain: add 300-500 calories
+                return Math.round(baseCalories + 400);
+            }
+        }
+
+        document.getElementById('dietForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const age = parseInt(document.getElementById('age').value);
+            const height = parseInt(document.getElementById('height').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+            const goalWeight = parseFloat(document.getElementById('goalWeight').value);
+            const goal = document.getElementById('goal').value;
+            const activityLevel = document.getElementById('activityLevel').value;
+            const diet = document.getElementById('diet').value;
+            const gender = document.getElementById('gender').value;
+
+            // Calculate BMI
+            const bmi = calculateBMI(weight, height);
+            const bmiInfo = getBMICategory(bmi);
+
+            // Calculate BMR and TDEE
+            const bmr = calculateBMR(weight, height, age, gender);
+            const tdee = bmr * activityMultipliers[activityLevel];
+            const dailyCalories = adjustCalories(tdee, weight, goalWeight);
+
+            // Get diet plan
+            const ageGroup = getAgeGroup(age);
+            const dietPlan = getDietPlan(age, dailyCalories, ageGroup, diet, goal);
+
+            // Display results
+            document.getElementById('bmiValue').textContent = bmi;
+            const bmiStatusDiv = document.getElementById('bmiStatus');
+            bmiStatusDiv.innerHTML = `<div class="bmi-status ${bmiInfo.class}">${bmiInfo.category}</div>`;
+
+            document.getElementById('calorieValue').textContent = dailyCalories;
+
+            let planHTML = `
+                <div class="diet-plan">
+                    <div class="nutrition-summary">
+                        <h4>📊 Your Plan Summary</h4>
+                        <p><strong>Age Group:</strong> ${ageGroup.charAt(0).toUpperCase() + ageGroup.slice(1)}</p>
+                        <p><strong>BMI Status:</strong> ${bmiInfo.category}</p>
+                        <p><strong>Daily Calorie Target:</strong> ${dailyCalories} kcal</p>
+                        <p><strong>Activity Level:</strong> ${document.getElementById('activityLevel').options[document.getElementById('activityLevel').selectedIndex].text}</p>
+                        <p><strong>Diet Type:</strong> ${diet === 'veg' ? 'Vegetarian' : 'Non-Vegetarian'}</p>
+                        <p><strong>Goal:</strong> ${goal.charAt(0).toUpperCase() + goal.slice(1)} Weight</p>
+                    </div>
+
+                    <h3 style="margin-top: 30px; color: #667eea; margin-bottom: 20px;">🍽️ Daily Meal Plan</h3>
+                    
+                    <div class="meal">
+                        <div class="meal-title">🌅 Breakfast (7-8 AM)</div>
+                        <div class="meal-items">
+                            <ul>
+                                ${dietPlan.breakfast.map(item => `<li>${item}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="meal">
+                        <div class="meal-title">☕ Mid-Morning Snack (10-11 AM)</div>
+                        <div class="meal-items">
+                            <ul>
+                                ${dietPlan.midMorning.map(item => `<li>${item}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="meal">
+                        <div class="meal-title">🍲 Lunch (12-1 PM)</div>
+                        <div class="meal-items">
+                            <ul>
+                                ${dietPlan.lunch.map(item => `<li>${item}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="meal">
+                        <div class="meal-title">🥤 Evening Snack (4-5 PM)</div>
+                        <div class="meal-items">
+                            <ul>
+                                ${dietPlan.eveningSnack.map(item => `<li>${item}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="meal">
+                        <div class="meal-title">🌙 Dinner (7-8 PM)</div>
+                        <div class="meal-items">
+                            <ul>
+                                ${dietPlan.dinner.map(item => `<li>${item}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="nutrition-summary">
+                        <h4>💡 Tips for Success</h4>
+                        <ul style="margin-left: 20px; line-height: 1.8; color: #555;">
+                            <li>Drink at least 8-10 glasses of water daily</li>
+                            <li>Include seasonal fruits and vegetables in your diet</li>
+                            <li>Exercise regularly as per your activity level</li>
+                            <li>Maintain consistent meal timings</li>
+                            <li>Consult a nutritionist for personalized guidance</li>
+                            <li>Track your progress weekly</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('planDetails').innerHTML = planHTML;
+            document.getElementById('resultSection').style.display = 'block';
+            document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
