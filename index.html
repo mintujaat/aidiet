@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -653,6 +654,132 @@
             female: 447.593
         };
 
+        // Extensive Food Database
+        const foodDatabase = {
+            breakfast_veg_light: [
+                'Whole grain toast with almond butter', 'Banana with yogurt', 'Oatmeal with berries',
+                'Vegetable omelet', 'Smoothie bowl with granola', 'Wheat toast with cottage cheese',
+                'Idli with sambar', 'Dosa with chutney', 'Poha with vegetables', 'Upma with veggies',
+                'Pancakes with honey', 'French toast with cinnamon', 'Cereal with milk and fruit',
+                'Toast with peanut butter and banana', 'Scrambled eggs with veggies', 'Muesli with yogurt',
+                'Buckwheat pancakes', 'Chia pudding', 'Fruit salad with nuts', 'Toast with avocado',
+                'Vegetable breakfast wrap', 'Paratha with yogurt', 'Toast with cottage cheese and jam'
+            ],
+            breakfast_veg_gain: [
+                'Oats with whole milk and banana', 'Cheese omelet with toast', 'Yogurt with granola and nuts',
+                'Paratha with butter and pickle', 'Bread with peanut butter and honey', 'Rice porridge with refined oil',
+                'Halwa with milk', 'Chikhalwali with butter', 'Toast with cheese and bacon bits', 'Milk with nuts and dates',
+                'Fried paratha with ghee', 'Egg fried rice', 'Bread pakora with sugar', 'Cream-based smoothie with nuts',
+                'Pancakes with chocolate spread', 'Waffle with syrup and butter', 'Pizza toast with cheese', 'Bread omelet with mayo',
+                'Cornflakes with whole milk and honey', 'Toast with butter and jam', 'Milk shake with almonds and banana'
+            ],
+            breakfast_nonveg_light: [
+                'Egg white omelet with veggies', 'Grilled chicken with toast', 'Fish with whole wheat bread',
+                'Boiled eggs with toast', 'Chicken sandwich', 'Scrambled eggs', 'Grilled fish with vegetables',
+                'Turkey sandwich', 'Chicken upma', 'Fish rice with veggies', 'Egg curry with roti',
+                'Smoked salmon with toast', 'Tuna sandwich', 'Chicken breakfast bowl', 'Fish cake with veggies',
+                'Egg scramble with mushrooms', 'Grilled shrimp', 'Chicken tikka with chapati', 'Fish fry light',
+                'Egg bhurji with roti', 'Chicken sausage with toast', 'Fish shakshuka'
+            ],
+            breakfast_nonveg_gain: [
+                'Omelet (3 eggs) with butter', 'Chicken paratha', 'Salmon with toast and ghee',
+                'Fried eggs with butter', 'Chicken biryani', 'Mutton keema with bread', 'Pork chops with toast',
+                'Fish with rice and ghee', 'Egg bhurji with ghee', 'Chicken mayo sandwich', 'Mutton curry with roti',
+                'Smoked salmon with whole milk', 'Duck with bread', 'Shrimp curry with rice', 'Bacon fried rice',
+                'Sausage and egg breakfast', 'Fish fry with cheese', 'Chicken butter rolls', 'Beef hash with toast',
+                'Mackerel with rice', 'Crab omelet with butter', 'Lobster with bread and ghee'
+            ],
+            midmorning_veg: [
+                'Greek yogurt with berries', 'Green tea with almonds', 'Smoothie (spinach, banana, protein)',
+                'Fruit smoothie', 'Yogurt with granola', 'Nuts and seeds', 'Mixed fruit salad',
+                'Banana with peanut butter', 'Apple with almonds', 'Roasted chickpeas', 'Cucumber with hummus',
+                'Cheese and crackers', 'Paneer tikka', 'Spring rolls', 'Vegetable chips',
+                'Mixed berries', 'Orange juice', 'Coconut water', 'Vegetable soup',
+                'Mushroom soup', 'Carrot sticks', 'Mixed nuts trail mix', 'Whole grain crackers with cottage cheese',
+                'Smoothie with oats', 'Fruit yogurt parfait', 'Corn pops with milk'
+            ],
+            midmorning_nonveg: [
+                'Grilled chicken breast', 'Tuna salad', 'Green tea with boiled eggs', 'Chicken sandwich',
+                'Fish cakes', 'Shrimp snack', 'Boiled eggs', 'Chicken tikka pieces', 'Turkey roll',
+                'Smoked salmon', 'Fish nuggets', 'Egg salad sandwich', 'Grilled fish fillet',
+                'Chicken soup', 'Fish soup', 'Boiled shrimp', 'Chicken salad wrap', 'Tuna sandwich',
+                'Egg muffins', 'Fish crackers', 'Beef jerky', 'Duck leg', 'Crab snack', 'Anchovy snack'
+            ],
+            lunch_veg_light: [
+                'Chickpea salad with veggies', 'Lentil curry with brown rice', 'Paneer with broccoli',
+                'Mixed vegetable curry with rice', 'Paneer with dal', 'Salad with chickpeas',
+                'Bitter gourd fry with rice', 'Okra curry with rice', 'Cauliflower stir-fry with roti',
+                'Chana dal with veggies', 'Black bean curry', 'Vegetable pulao', 'Khichdi with yogurt',
+                'Dal soup with vegetables', 'Vegetable fried rice', 'Tofu stir-fry with naan',
+                'Beetroot curry', 'Spinach and dal', 'Pumpkin curry', 'Bean sprout fry', 'Radish curry'
+            ],
+            lunch_veg_gain: [
+                'Paneer butter masala with rice', 'Moong dal khichdi with ghee', 'Chickpea curry with bread',
+                'Rajma and rice with ghee', 'Paneer tikka masala with naan', 'Dal makhani', 'Matar paneer',
+                'Paneer biryani', 'Chana bhatura', 'Malai kofta curry', 'Paneer tikka with rice',
+                'Vegetable biryani', 'Dal with butter and cream', 'Paneer creamy curry', 'Moong halwa',
+                'Kheer khichdi', 'Paneer pulao with ghee', 'Cheese naan with paneer', 'Vegetable pulao with butter'
+            ],
+            lunch_nonveg_light: [
+                'Grilled fish with vegetables', 'Chicken salad with olive oil', 'Lean turkey with rice',
+                'Grilled salmon with veggies', 'Chicken stir-fry', 'Lean meat with dal', 'Fish steamed with veggies',
+                'Chicken tandoori with salad', 'Shrimp curry light', 'Tuna rice bowl', 'Grilled tilapia',
+                'Turkey meatballs with veggies', 'Fish with asparagus', 'Chicken with broccoli',
+                'Lean beef with greens', 'Duck breast with veggies', 'Ground chicken with rice'
+            ],
+            lunch_nonveg_gain: [
+                'Butter chicken with rice', 'Fish biryani', 'Mutton curry with bread', 'Chicken butter masala with naan',
+                'Meat biryani', 'Keema with paratha', 'Shrimp butter curry', 'Fish fry with rice',
+                'Chicken lollipop with rice', 'Mutton nihari', 'Gosht biryani', 'Seekh kebab with naan',
+                'Fish tikka with creamy sauce', 'Chicken makhani', 'Meat kofta curry', 'Duck biryani',
+                'Paneer and meat curry', 'Chicken haleem', 'Fish amritsari with rice', 'Lamb pulao'
+            ],
+            evening_snack_veg: [
+                'Cucumber slices with hummus', 'Mixed nuts', 'Apple with peanut butter', 'Herbal tea with biscuits',
+                'Fruit (apple/orange)', 'Popcorn (light)', 'Roasted chana', 'Dry fruits mix', 'Mixed vegetables',
+                'Cheese and crackers', 'Yogurt', 'Smoothie', 'Banana chips', 'Carrot sticks', 'Celery with dip',
+                'Cookies and milk', 'Vegetable pakora', 'Samosa (baked)', 'Barfi', 'Laddu', 'Chikki',
+                'Jaggery with peanuts', 'Fruit puree', 'Tea with biscuit', 'Muffin with berries'
+            ],
+            evening_snack_nonveg: [
+                'Boiled egg', 'Grilled chicken strips', 'Fish curry (light)', 'Boiled eggs', 'Grilled chicken',
+                'Tuna snack', 'Shrimp chips', 'Grilled fish', 'Egg salad', 'Chicken salami',
+                'Turkey slices', 'Smoked salmon', 'Fish crackers', 'Chicken nuggets (baked)', 'Beef stick',
+                'Shrimp chips', 'Canned tuna', 'Jerky', 'Duck snack', 'Anchovy chips'
+            ],
+            dinner_veg_light: [
+                'Dal with roti', 'Vegetable stir-fry with tofu', 'Quinoa bowl with roasted veggies',
+                'Roti with vegetable sabzi', 'Quinoa salad', 'Vegetable soup with bread', 'Vegetable curry with rice',
+                'Mild lentil soup', 'Stir-fried vegetables with rice', 'Baked potato with veggies',
+                'Vegetable pasta with olive oil', 'Mixed grill vegetables', 'Mushroom risotto light',
+                'Spinach and lentil curry', 'Cabbage stir-fry', 'Green bean curry', 'Corn and pea curry'
+            ],
+            dinner_veg_gain: [
+                'Rajma with rice', 'Vegetable biryani', 'Dal makhani with naan', 'Dal with butter and roti',
+                'Paneer tikka masala with naan', 'Paneer creamy curry with rice', 'Vegetable pulao with butter',
+                'Kheer with khichdi', 'Paratha with gravy', 'Cheese and vegetable naan', 'Paneer pakora with rice',
+                'Malai kofta', 'Paneer makhani', 'Dal creamy with bread', 'Vegetable haleem'
+            ],
+            dinner_nonveg_light: [
+                'Grilled salmon with veggies', 'Chicken stir-fry', 'Lean meat with dal', 'Tandoori chicken with dal',
+                'Fish with roti', 'Lean meat curry', 'Grilled fish with lentils', 'Chicken tandoori with veggies',
+                'Shrimp stir-fry', 'Tuna pasta salad', 'Grilled tilapia with rice', 'Turkey with greens',
+                'Duck breast with vegetables', 'Grilled calamari', 'Fish soup with bread', 'Beef with broccoli'
+            ],
+            dinner_nonveg_gain: [
+                'Chicken tikka masala with naan', 'Fish fry with rice', 'Keema with paratha', 'Fish biryani',
+                'Butter chicken with rice', 'Meat biryani', 'Chicken makhani with naan', 'Seekh kebab with rice',
+                'Mutton nihari with bread', 'Shrimp butter curry with rice', 'Fish tikka masala', 'Meat kofta',
+                'Chicken haleem', 'Duck biryani', 'Fish amritsari with rice', 'Lamb pulao with ghee'
+            ]
+        };
+
+        // Get random items from array
+        function getRandomItems(arr, count = 3) {
+            let shuffled = [...arr].sort(() => Math.random() - 0.5);
+            return shuffled.slice(0, count);
+        }
+
         function calculateBMR(weight, height, age, gender) {
             // Mifflin-St Jeor Formula
             if (gender === 'male') {
@@ -675,155 +802,20 @@
         }
 
         function getDietPlan(age, calories, ageGroup, dietType, goal) {
-            const plans = {
-                teen: {
-                    veg: {
-                        lose: {
-                            breakfast: ['Whole grain toast with almond butter', 'Banana with yogurt', 'Eggs (boiled) with veggies'],
-                            midMorning: ['Greek yogurt with berries', 'Green tea with almonds', 'Smoothie (spinach, banana, protein)'],
-                            lunch: ['Chickpea salad with veggies', 'Lentil curry with brown rice', 'Paneer with broccoli'],
-                            eveningSnack: ['Cucumber slices with hummus', 'Mixed nuts', 'Apple with peanut butter'],
-                            dinner: ['Dal with roti', 'Vegetable stir-fry with tofu', 'Quinoa bowl with roasted veggies']
-                        },
-                        gain: {
-                            breakfast: ['Oats with whole milk and banana', 'Cheese omelet with toast', 'Yogurt with granola and nuts'],
-                            midMorning: ['Peanut butter sandwich', 'Protein smoothie with dates', 'Cheese and crackers'],
-                            lunch: ['Paneer butter masala with rice', 'Moong dal khichdi with ghee', 'Chickpea curry with bread'],
-                            eveningSnack: ['Protein shake with milk', 'Dry fruits and nuts', 'Banana with almond butter'],
-                            dinner: ['Rajma with rice', 'Vegetable biryani', 'Dal makhani with naan']
-                        },
-                        maintain: {
-                            breakfast: ['Whole grain cereal with milk', 'Veggie omelet', 'Oatmeal with berries'],
-                            midMorning: ['Fruit smoothie', 'Yogurt with granola', 'Nuts and seeds'],
-                            lunch: ['Mixed vegetable curry with rice', 'Paneer with dal', 'Salad with chickpeas'],
-                            eveningSnack: ['Herbal tea with biscuits', 'Fruit (apple/orange)', 'Popcorn (light)'],
-                            dinner: ['Roti with vegetable sabzi', 'Quinoa salad', 'Vegetable soup with bread']
-                        }
-                    },
-                    nonveg: {
-                        lose: {
-                            breakfast: ['Egg white omelet with veggies', 'Grilled chicken with toast', 'Fish with whole wheat bread'],
-                            midMorning: ['Grilled chicken breast', 'Tuna salad', 'Green tea with boiled eggs'],
-                            lunch: ['Grilled fish with vegetables', 'Chicken salad with olive oil', 'Lean turkey with rice'],
-                            eveningSnack: ['Boiled egg', 'Grilled chicken strips', 'Fish curry (light)'],
-                            dinner: ['Grilled salmon with veggies', 'Chicken stir-fry', 'Lean meat with dal']
-                        },
-                        gain: {
-                            breakfast: ['Omelet (3 eggs) with butter', 'Chicken paratha', 'Salmon with toast and ghee'],
-                            midMorning: ['Chicken sandwich with mayo', 'Protein shake with chicken', 'Boiled eggs with nuts'],
-                            lunch: ['Butter chicken with rice', 'Fish biryani', 'Mutton curry with bread'],
-                            eveningSnack: ['Chicken malai kabab', 'Boiled eggs', 'Milk with banana'],
-                            dinner: ['Chicken tikka masala with naan', 'Fish fry with rice', 'Keema with paratha']
-                        },
-                        maintain: {
-                            breakfast: ['Scrambled eggs with toast', 'Grilled chicken with bread', 'Fish breakfast bowl'],
-                            midMorning: ['Boiled eggs', 'Chicken breast', 'Tuna sandwich'],
-                            lunch: ['Grilled chicken with rice', 'Fish curry (medium)', 'Turkey with veggies'],
-                            eveningSnack: ['Boiled eggs', 'Grilled chicken', 'Yogurt'],
-                            dinner: ['Tandoori chicken with dal', 'Fish with roti', 'Lean meat curry']
-                        }
-                    }
-                },
-                adult: {
-                    veg: {
-                        lose: {
-                            breakfast: ['Whole wheat toast with almond butter', 'Vegetable omelette', 'Smoothie bowl'],
-                            midMorning: ['Green smoothie', 'Yogurt with berries', 'Mixed nuts (small portion)'],
-                            lunch: ['Chickpea salad with olive oil dressing', 'Paneer tikka with vegetables', 'Lentil soup with whole grain bread'],
-                            eveningSnack: ['Herbal tea with almonds', 'Cucumber and carrot salad', 'Roasted chana'],
-                            dinner: ['Vegetable stir-fry with tofu', 'Dal makhani (light)', 'Baked vegetables with quinoa']
-                        },
-                        gain: {
-                            breakfast: ['Oatmeal with whole milk and honey', 'Cheese omelet with butter toast', 'Yogurt with granola and dry fruits'],
-                            midMorning: ['Peanut butter and banana sandwich', 'Protein smoothie with avocado', 'Cheese and nuts'],
-                            lunch: ['Paneer butter masala with rice', 'Moong dal halwa', 'Vegetable biryani'],
-                            eveningSnack: ['Milk with almonds', 'Banana with peanut butter', 'Dry fruits mix'],
-                            dinner: ['Rajma and rice with ghee', 'Paneer tikka masala with naan', 'Dal with butter and roti']
-                        },
-                        maintain: {
-                            breakfast: ['Whole grain cereal with milk', 'Vegetable sandwich', 'Oats with banana'],
-                            midMorning: ['Fruit (apple/orange)', 'Yogurt', 'Handful of nuts'],
-                            lunch: ['Mixed vegetable curry with rice', 'Paneer with dal', 'Legume salad'],
-                            eveningSnack: ['Green tea with cookies', 'Fruit smoothie', 'Roasted chickpeas'],
-                            dinner: ['Roti with sabzi', 'Lentil curry with vegetables', 'Grain bowl with protein']
-                        }
-                    },
-                    nonveg: {
-                        lose: {
-                            breakfast: ['Egg white toast', 'Grilled chicken with vegetables', 'Smoked salmon with whole grain'],
-                            midMorning: ['Grilled chicken breast', 'Light fish curry', 'Boiled eggs'],
-                            lunch: ['Grilled fish with steamed broccoli', 'Turkey salad', 'Lean chicken stir-fry'],
-                            eveningSnack: ['Boiled eggs', 'Fish snacks', 'Grilled chicken strips'],
-                            dinner: ['Salmon with vegetables', 'Tandoori chicken with salad', 'Lean meat with dal']
-                        },
-                        gain: {
-                            breakfast: ['3-egg omelet with butter', 'Chicken paratha with ghee', 'Smoked salmon with whole milk'],
-                            midMorning: ['Chicken sandwich with mayo', 'Boiled eggs with nuts', 'Fish curry with rice'],
-                            lunch: ['Butter chicken with naan', 'Biryani with meat', 'Keema with paratha'],
-                            eveningSnack: ['Mutton Seekh kabab', 'Milk with boiled eggs', 'Shrimp curry'],
-                            dinner: ['Chicken tikka masala with rice', 'Fish fry with paratha', 'Meat curry with bread']
-                        },
-                        maintain: {
-                            breakfast: ['Scrambled eggs with toast', 'Grilled chicken with vegetable', 'Fish and rice'],
-                            midMorning: ['Boiled eggs', 'Grilled chicken', 'Tuna salad'],
-                            lunch: ['Grilled fish with rice', 'Chicken curry (medium)', 'Turkey with vegetables'],
-                            eveningSnack: ['Boiled eggs', 'Grilled chicken', 'Greek yogurt'],
-                            dinner: ['Tandoori chicken with dal', 'Fish curry with roti', 'Lean meat with vegetables']
-                        }
-                    }
-                },
-                senior: {
-                    veg: {
-                        lose: {
-                            breakfast: ['Oatmeal with milk', 'Whole wheat toast with cottage cheese', 'Light vegetable soup'],
-                            midMorning: ['Tea with biscuits', 'Banana', 'Mixed berries'],
-                            lunch: ['Vegetable khichdi', 'Light dal with rice', 'Steamed vegetables with roti'],
-                            eveningSnack: ['Herbal tea with fruits', 'Light crackers', 'Warm milk'],
-                            dinner: ['Soft dal with rice', 'Vegetable curry (mild)', 'Light vegetable soup']
-                        },
-                        gain: {
-                            breakfast: ['Oatmeal with whole milk and honey', 'Toast with butter and jam', 'Milk pudding with dry fruits'],
-                            midMorning: ['Warm milk with banana', 'Nuts and dry fruits', 'Cottage cheese'],
-                            lunch: ['Dal makhani with rice', 'Paneer with vegetables', 'Vegetable biryani'],
-                            eveningSnack: ['Warm milk with almonds', 'Fruit with custard', 'Wheat cookies'],
-                            dinner: ['Creamy dal with roti', 'Paneer curry with rice', 'Vegetable kheer']
-                        },
-                        maintain: {
-                            breakfast: ['Mild oatmeal', 'Toast with butter', 'Boiled eggs (1-2)'],
-                            midMorning: ['Tea with biscuits', 'Banana or orange', 'Almonds'],
-                            lunch: ['Dal with rice', 'Vegetable curry', 'Roti with sabzi'],
-                            eveningSnack: ['Herbal tea', 'Light cookies', 'Fruit'],
-                            dinner: ['Light dal soup', 'Soft vegetable curry', 'Rice with dal']
-                        }
-                    },
-                    nonveg: {
-                        lose: {
-                            breakfast: ['Soft omelet', 'Fish soup', 'Boiled eggs with toast'],
-                            midMorning: ['Light chicken soup', 'Boiled eggs', 'Warm milk'],
-                            lunch: ['Light fish curry with rice', 'Chicken soup', 'Tender meat with vegetables'],
-                            eveningSnack: ['Light broth', 'Boiled eggs', 'Warm milk'],
-                            dinner: ['Soft fish curry', 'Light chicken dal', 'Meat soup with vegetables']
-                        },
-                        gain: {
-                            breakfast: ['Soft omelet with butter', 'Fish with rice', 'Boiled eggs with milk'],
-                            midMorning: ['Warm milk with chicken', 'Creamy chicken soup', 'Fish with toast'],
-                            lunch: ['Butter chicken with rice', 'Meat biryani', 'Fish fry with rice'],
-                            eveningSnack: ['Warm milk with eggs', 'Chicken custard', 'Fish snacks'],
-                            dinner: ['Creamy fish curry with rice', 'Tender chicken curry', 'Meat dal']
-                        },
-                        maintain: {
-                            breakfast: ['Soft omelet', 'Boiled eggs with toast', 'Light fish'],
-                            midMorning: ['Boiled eggs', 'Chicken broth', 'Warm milk'],
-                            lunch: ['Light fish curry with rice', 'Tender chicken with vegetables', 'Meat soup'],
-                            eveningSnack: ['Boiled eggs', 'Warm milk', 'Light broth'],
-                            dinner: ['Soft fish curry', 'Chicken dal', 'Light meat curry']
-                        }
-                    }
-                }
+            const mealType = dietType === 'veg' ? 'veg' : 'nonveg';
+            const goalType = goal === 'lose' ? 'light' : goal === 'gain' ? 'gain' : 'maintain';
+            
+            // Select food categories based on diet type
+            const breakfastKey = `breakfast_${mealType}_${goalType === 'maintain' ? 'light' : goalType}`;
+            const dinnerKey = `dinner_${mealType}_${goalType === 'maintain' ? 'light' : goalType}`;
+            
+            return {
+                breakfast: getRandomItems(foodDatabase[breakfastKey] || foodDatabase.breakfast_veg_light, 3),
+                midMorning: getRandomItems(foodDatabase[`midmorning_${mealType}`], 3),
+                lunch: getRandomItems(foodDatabase[`lunch_${mealType}_${goalType === 'maintain' ? 'light' : goalType}`], 3),
+                eveningSnack: getRandomItems(foodDatabase[`evening_snack_${mealType}`], 3),
+                dinner: getRandomItems(foodDatabase[dinnerKey] || foodDatabase.dinner_veg_light, 3)
             };
-
-            const dietPlan = plans[ageGroup][dietType][goal];
-            return dietPlan;
         }
 
         function getAgeGroup(age) {
